@@ -1,0 +1,97 @@
+Drop database ClientManagement;
+CREATE DATABASE CrisisCounselorDB;
+
+USE CrisisCounselorDB;
+
+CREATE TABLE Clients (
+    client_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    date_of_birth DATE,
+    address TEXT,
+    zip_code VARCHAR(10),
+    risk_level ENUM('Low', 'Medium', 'High', 'Critical'),
+    flag ENUM('None', 'Important', 'Urgent')
+);
+
+CREATE TABLE Staff (
+    staff_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    role VARCHAR(255)
+);
+
+CREATE TABLE Organizations (
+    organization_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    address TEXT,
+    phone VARCHAR(15),
+    email VARCHAR(255),
+    zip_code VARCHAR(10),
+    last_updated DATE,
+    services TEXT,
+    age_groups_served VARCHAR(255),
+    other_details TEXT
+);
+
+CREATE TABLE Referrals (
+    referral_id INT AUTO_INCREMENT PRIMARY KEY,
+    client_id INT,
+    staff_id INT,
+    organization_id INT,
+    referral_type ENUM('Mental Health', 'Substance Use', 'Housing', 'Transportation', 'Food', 'Employment'),
+    date_referred DATE,
+    able_to_contact_followup BOOLEAN,
+    contact_type_preferred ENUM('Phone', 'Email', 'Text'),
+    phone VARCHAR(15),
+    email VARCHAR(255),
+    FOREIGN KEY (client_id) REFERENCES Clients(client_id),
+    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id),
+    FOREIGN KEY (organization_id) REFERENCES Organizations(organization_id)
+);
+
+CREATE TABLE FollowUps (
+    followup_id INT AUTO_INCREMENT PRIMARY KEY,
+    referral_id INT,
+    client_id INT,
+    staff_id INT,
+    deadline_follow_up DATE,
+    appointment_made BOOLEAN,
+    gender ENUM('Female', 'Male', 'Transgender MTF', 'Transgender FTM', 'Gender non-conforming', 'Other', 'Refused'),
+    hispanic_or_latino ENUM('Yes', 'No'),
+    ethnicity ENUM('Black/AfricanAmerican', 'White', 'Multiracial', 'American Indian', 'Alaska Native', 'South Asian', 'Chinese', 'Filipino', 'Japanese', 'Korean', 'Vietnamese', 'Other Asian', 'Native Hawaiian', 'Guamanian/Chamorro', 'Samoan', 'Other Pacifice Islander', 'Other', 'Refused'),
+    sexual_identity ENUM('Straight/heterosexual', 'Homosexual', 'Bisexual', 'Queer', 'Pansexual', 'Questioning', 'Asexual', 'Something else', 'Refused'),
+    age ENUM('Under 12', '12-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65-74', '75 or older'),
+    religious_affiliation ENUM('Baptist', 'Protestant', 'Roman Catholic', 'Mormon', 'Evangelical', 'Orthodox', 'Jewish', 'Muslim', 'Buddhist', 'Hindu', 'Lutheran', '7th day Adventist', 'Universalist', 'Atheist', 'Agnostics', 'Something else', 'Nothing in particular'),
+    housing ENUM('Private residence', 'Foster home', 'Residential care', 'Crisis residence', 'Residential treatment center', 'Institutional setting', 'Jail/correctional facility', 'Homeless/shelter', 'Other', 'Don’t know', 'Refuse'),
+    income ENUM('Less than $30,000', '$30,000 to less than $40,000', '$40,000 to less than $50,000', '$50,000 to less than $60,000', '$60,000 to less than $70,000', '$70,000 to less than $80,000', '$80,000 to less than $90,000', '$90,000 to less than $100,000', '$100,000 or more'),
+    employment ENUM('Employed full time', 'Employed part-time', 'Unemployed, looking for work', 'Not employed, not looking for work', 'Not working due to disability', 'Retired', 'Not working, other', 'Refused', 'Don’t know'),
+    education ENUM('Less than 12th grade', '12th grade/high school diploma/GED', 'Vocational/technical diploma', 'Some college/university', 'Bachelor’s degree', 'Graduate work/graduate degree', 'Refused', 'Don’t know'),
+    primary_language ENUM('English', 'Spanish', 'Other'),
+    was_988_helpful BOOLEAN,
+    use_988_again BOOLEAN,
+    like_about_988 TEXT,
+    not_like_about_988 TEXT,
+    FOREIGN KEY (referral_id) REFERENCES Referrals(referral_id),
+    FOREIGN KEY (client_id) REFERENCES Clients(client_id),
+    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+);
+
+CREATE TABLE Appointments (
+    appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+    client_id INT,
+    staff_id INT,
+    date_time DATETIME,
+    purpose TEXT,
+    status ENUM('Scheduled', 'Completed', 'Canceled'),
+    FOREIGN KEY (client_id) REFERENCES Clients(client_id),
+    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+);
+
+CREATE TABLE Assessments (
+    assessment_id INT AUTO_INCREMENT PRIMARY KEY,
+    client_id INT,
+    assessment_date DATE,
+    type VARCHAR(255),
+    results TEXT,
+    FOREIGN KEY (client_id) REFERENCES Clients(client_id)
+);
