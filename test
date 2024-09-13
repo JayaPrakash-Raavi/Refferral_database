@@ -1,0 +1,97 @@
+import { render, fireEvent, waitFor } from '@testing-library/react';
+import BenchmarkHubView from './benchmark-hub-view';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { useAtom } from 'jotai';
+
+// Mocking useAtom from jotai
+vi.mock('jotai', () => ({
+  useAtom: vi.fn(),
+  useSetAtom: vi.fn(),
+}));
+
+const queryClient = new QueryClient();
+
+const setHubKeyMock = vi.fn();
+const setSelectedOptionMock = vi.fn();
+const setBreadcrumbItemMock = vi.fn();
+const setSelectedTimezoneMock = vi.fn();
+
+const TestComponent = () => (
+  <QueryClientProvider client={queryClient}>
+    <BenchmarkHubView />
+  </QueryClientProvider>
+);
+
+describe('BenchmarkHubView Component', () => {
+
+  beforeEach(() => {
+    // Set up mocked atom values before each test
+    useAtom
+      .mockReturnValueOnce(['Account Tenant Restrictions', setSelectedOptionMock]) // selectedOption
+      .mockReturnValueOnce(['Account Tenant Restrictions', setBreadcrumbItemMock]) // breadcrumbItem
+      .mockReturnValueOnce(['Asia/Kolkata', setSelectedTimezoneMock]) // timeZone
+      .mockReturnValueOnce([null, vi.fn()])  // error
+      .mockReturnValueOnce([null, vi.fn()])  // success
+      .mockReturnValueOnce(['hubKey', setHubKeyMock]); // hubKey
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks(); // Clear mocks after each test
+  });
+
+  it('should render the BenchmarkHubView component', async () => {
+    const { getByText } = render(<TestComponent />);
+    
+    await waitFor(() => {
+      expect(getByText(/Benchmark/i)).toBeInTheDocument();
+      expect(getByText(/Hub/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should handle tab click and update selectedOption and breadcrumbItem', async () => {
+    const { getByText } = render(<TestComponent />);
+
+    // Simulate clicking on a tab
+    const tab = getByText('Hub 1');
+    fireEvent.click(tab);
+
+    await waitFor(() => {
+      expect(setHubKeyMock).toHaveBeenCalledWith('hub1');
+      expect(setSelectedOptionMock).toHaveBeenCalledWith('Tab1');
+      expect(setBreadcrumbItemMock).toHaveBeenCalledWith('Hub 1');
+    });
+  });
+
+  it('should update timezone on selection', async () => {
+    const { getByRole } = render(<TestComponent />);
+    const timeZoneDropdown = getByRole('combobox');
+
+    fireEvent.change(timeZoneDropdown, { target: { value: 'America/New_York' } });
+
+    await waitFor(() => {
+      expect(setSelectedTimezoneMock).toHaveBeenCalledWith('America/New_York');
+    });
+  });
+
+  it('should display an error message if error is present', async () => {
+    useAtom.mockReturnValueOnce(['Error Occurred', vi.fn()]);  // Mock the error atom
+
+    const { getByText } = render(<TestComponent />);
+
+    await waitFor(() => {
+      expect(getByText('Error Occurred')).toBeInTheDocument();
+    });
+  });
+
+  it('should display a success message if success is present', async () => {
+    useAtom.mockReturnValueOnce([null, vi.fn()])  // error
+           .mockReturnValueOnce(['Success!', vi.fn()]);  // success
+
+    const { getByText } = render(<TestComponent />);
+
+    await waitFor(() => {
+      expect(getByText('Success!')).toBeInTheDocument();
+    });
+  });
+
+});
