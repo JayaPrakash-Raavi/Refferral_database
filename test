@@ -1,13 +1,13 @@
+import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import BenchmarkHubView from './benchmark-hub-view';  // Your component
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { vi } from 'vitest';
-import React from 'react';
 
 // Mocking React's useState
 const mockSetState = vi.fn();
 
-vi.spyOn(React, 'useState').mockImplementation((initial) => [initial, mockSetState]);
+vi.spyOn(React, 'useState').mockImplementation((initialState) => [initialState, mockSetState]);
 
 const queryClient = new QueryClient();
 
