@@ -1,4 +1,5 @@
 # **Centerstone Referral Management System**  
+![image](https://github.com/user-attachments/assets/dcc7f460-fa30-40f3-b973-16af8c311da8)
 
 ## **Project Overview**  
 The **Centerstone Referral Management System** is a web-based application designed to streamline client referral and follow-up processes for crisis counselors. The system improves efficiency by automating referral tracking, follow-up activities, and data visualization, ensuring timely and appropriate client support.  
