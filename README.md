@@ -20,3 +20,76 @@ The **Centerstone Referral Management System** is a web-based application design
 - **Version Control**: GitHub  
 
 ## **Project Structure**  
+```
+/centerstone-referral-system  
+│── backend/               # Backend API (Node.js / Django)  
+│── frontend/              # Frontend UI (React.js)  
+│── database/              # Database Schema & Scripts (MySQL / PostgreSQL)  
+│── docs/                  # Documentation, ER diagrams  
+│── tests/                 # Unit & integration tests  
+│── .gitignore  
+│── README.md  
+│── LICENSE  
+```
+
+## **Installation & Setup**  
+### **1. Clone the Repository**  
+```sh
+git clone https://github.com/your-repo/centerstone-referral.git  
+cd centerstone-referral  
+```
+
+### **2. Backend Setup**  
+- Install dependencies:  
+  ```sh
+  cd backend  
+  npm install  # or pip install -r requirements.txt for Django  
+  ```  
+- Set up environment variables in `.env`.  
+- Start the backend server:  
+  ```sh
+  npm start  # or python manage.py runserver  
+  ```  
+
+### **3. Frontend Setup**  
+- Install dependencies:  
+  ```sh
+  cd frontend  
+  npm install  
+  ```  
+- Start the React development server:  
+  ```sh
+  npm start  
+  ```  
+
+### **4. Database Setup**  
+- Set up MySQL or PostgreSQL.  
+- Run migration scripts:  
+  ```sh
+  mysql -u root -p < database/schema.sql  
+  ```  
+
+## **Usage**  
+- Login using role-based credentials.  
+- Add & manage organizations in the resource module.  
+- Create & manage client referrals.  
+- Track follow-ups & generate reports.  
+
+## **Deployment**  
+- **Cloud Hosting**: AWS / Google Cloud  
+- **Production Build**:  
+  ```sh
+  npm run build  
+  ```  
+- **Containerization (Optional)**:  
+  ```sh
+  docker-compose up -d  
+  ```
+
+## **Contributing**  
+- Fork the repository  
+- Create a feature branch  
+- Submit a pull request  
+
+## **License**  
+This project is licensed under Jaya Prakash Narayana Raavi.  
