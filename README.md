@@ -23,9 +23,9 @@ The **Centerstone Referral Management System** is a web-based application design
 ## **Project Structure**  
 ```
 /centerstone-referral-system  
-│── backend/               # Backend API (Node.js / Django)  
+│── backend/               # Backend API (Node.js)  
 │── frontend/              # Frontend UI (React.js)  
-│── database/              # Database Schema & Scripts (MySQL / PostgreSQL)  
+│── database/              # Database Schema & Scripts (MySQL)  
 │── docs/                  # Documentation, ER diagrams  
 │── tests/                 # Unit & integration tests  
 │── .gitignore  
